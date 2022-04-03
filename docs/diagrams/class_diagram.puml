@@ -17,6 +17,14 @@ package EntityStorage {
     }
 }
 
+package EntityFactory {
+    class EntityFactory {
+        + createPlayer(x, y int)
+        + createMapItem(x, y int)
+        + createInventoryBox()
+    }
+}
+
 package Systems {
     class Input {
     }
@@ -163,5 +171,7 @@ DrawSystem "1" o-- "*" DrawableComponent
 
 System o-- EventExchanger
 System o-- EntityStorage
+System o-- EntityFactory
+EntityFactory o-- EntityStorage
 
 @enduml

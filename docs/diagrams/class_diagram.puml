@@ -3,7 +3,17 @@ hide empty members
 
 package Entity {
     class Entity {
-        + getComponent(type)
+        + id: int
+    }
+}
+
+package EntityStorage {
+    class EntityStorage {
+        + createEntity(): int
+        + getEntityComponent(entityId, type): Component
+        + addEntityComponent(entityId, type)
+        + deleteEntityComponent(entityId, type, autodelete: bool)
+        + deleteEntity(entityId)
     }
 }
 
@@ -80,18 +90,20 @@ package Systems {
 
 package Components {
     abstract class Component {
-        + getEntity()
+        + entityId: int
     }
 
     together {
         class RealComponent {
-            x, y int
+            x, y: int
         }
 
         class IntentionComponent {
         }
 
         class StatsComponent {
+            + health: int
+            + attack: int
         }
 
         class InventoryComponent {
@@ -101,6 +113,8 @@ package Components {
         }
 
         class InventoryItemComponent {
+            + health: int
+            + attack: int
         }
 
         class DrawableComponent {
@@ -137,6 +151,9 @@ package Events {
         ComponentDestroyed
     }
 }
+EntityStorage o-- Entity
+EntityStorage o-- Component
+
 IntentionSystem "1" o-- "*" IntentionComponent 
 MoveSystem "1" o-- "*" IntentionComponent 
 InventorySystem "1" o-- "*" InventoryComponent 
@@ -145,6 +162,6 @@ WearSystem "1" o-- "*" IntentionComponent
 DrawSystem "1" o-- "*" DrawableComponent 
 
 System o-- EventExchanger
-Entity "1" o-- "*" Component
+System o-- EntityStorage
 
 @enduml

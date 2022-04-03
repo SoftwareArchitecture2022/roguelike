@@ -12,6 +12,6 @@ MainLoop : calls to systems that update world state
 
 [*] --> Init : Game started
 Init --> MainLoop : Init finished
-MainLoop --> [*] : Computer powered off
+MainLoop --> [*] : SIGKILL
 
 @enduml

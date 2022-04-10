@@ -1,0 +1,178 @@
+@startuml
+hide empty members
+
+package Entity {
+    class Entity {
+        + id: int
+    }
+}
+
+package EntityStorage {
+    class EntityStorage {
+        + createEntity(): int
+        + getEntityComponent(entityId, type): Component
+        + addEntityComponent(entityId, type)
+        + deleteEntityComponent(entityId, type, autodelete: bool)
+        + deleteEntity(entityId)
+    }
+}
+
+package EntityFactory {
+    class EntityFactory {
+        + createPlayer(x, y int)
+        + createMapItem(x, y int)
+        + createInventoryBox()
+    }
+}
+
+package Systems {
+    class Input {
+    }
+
+    class ImageBuffer {
+    }
+
+    abstract class System {
+        + update()
+    }
+
+    together {
+        class LoadSystem {
+            + update()
+            + generateFromFile(path: string)
+            + generate()
+        }
+
+        class InputSystem {
+            + update()
+        }
+
+        class IntentionSystem {
+            + update()
+        }
+
+        class MoveSystem {
+            + update()
+        }
+
+        class InventorySystem {
+            + update()
+        }
+
+        class WearSystem {
+            + update()
+        }
+
+        class DrawSystem {
+            + update()
+        }
+
+        class PresentSystem {
+            + update()
+        }
+    }
+
+    InputSystem o-left- Input
+    IntentionSystem o-left- Input
+
+    PresentSystem o-left- ImageBuffer
+    DrawSystem o-left- ImageBuffer
+
+    LoadSystem -right-|> System
+    InputSystem -right-|> System
+    IntentionSystem -right-|> System
+    MoveSystem -right-|> System
+    InventorySystem -right-|> System
+    WearSystem -right-|> System
+    DrawSystem -right-|> System
+    PresentSystem -right-|> System
+
+    PresentSystem -up[hidden]- DrawSystem
+    DrawSystem -up[hidden]- WearSystem
+    WearSystem -up[hidden]- InventorySystem
+    InventorySystem -up[hidden]- MoveSystem
+    MoveSystem -up[hidden]- IntentionSystem
+    IntentionSystem -up[hidden]- InputSystem
+    InputSystem -up[hidden]- LoadSystem
+}
+
+package Components {
+    abstract class Component {
+        + entityId: int
+    }
+
+    together {
+        class RealComponent {
+            x, y: int
+        }
+
+        class IntentionComponent {
+        }
+
+        class StatsComponent {
+            + health: int
+            + attack: int
+        }
+
+        class InventoryComponent {
+        }
+
+        class MapItemComponent {
+        }
+
+        class InventoryItemComponent {
+            + health: int
+            + attack: int
+        }
+
+        class DrawableComponent {
+        }
+    }
+
+    RealComponent          -left-|> Component
+    IntentionComponent     -left-|> Component
+    StatsComponent         -left-|> Component
+    InventoryComponent     -left-|> Component
+    MapItemComponent       -left-|> Component
+    InventoryItemComponent -left-|> Component
+    DrawableComponent      -left-|> Component
+
+    DrawableComponent -up[hidden]- InventoryItemComponent
+    InventoryItemComponent -up[hidden]- MapItemComponent
+    MapItemComponent -up[hidden]- InventoryComponent
+    InventoryComponent -up[hidden]- StatsComponent
+    StatsComponent -up[hidden]- IntentionComponent
+    IntentionComponent -up[hidden]- RealComponent
+
+    InventoryComponent "1" o-- "*" InventoryItemComponent
+}
+
+package Events {
+    class EventExchanger {
+        + subscribe(type: EventType, args...)
+        + emitEvent(type: EventType, args...)
+        + pullEvents()
+    }
+
+    enum EventType {
+        ComponentCreated
+        ComponentDestroyed
+    }
+}
+EntityStorage o-- Entity
+EntityStorage o-- Component
+
+IntentionSystem "1" o-- "*" IntentionComponent 
+MoveSystem "1" o-- "*" IntentionComponent 
+InventorySystem "1" o-- "*" InventoryComponent 
+InventorySystem "1" o-- "*" MapItemComponent 
+WearSystem "1" o-- "*" IntentionComponent 
+DrawSystem "1" o-- "*" DrawableComponent 
+
+System o-- EventExchanger
+System o-- EntityStorage
+System o-- EntityFactory
+EntityFactory o-- EntityStorage
+EntityFactory o-- EventExchanger
+
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+
+state Init {
+}
+Init : Initialization of main objects,
+Init : systems and their communications
+
+state MainLoop {
+}
+MainLoop : State of continuous subsequent 
+MainLoop : calls to systems that update world state
+
+[*] --> Init : Game started
+Init --> MainLoop : Init finished
+MainLoop --> [*] : SIGKILL
+
+@enduml

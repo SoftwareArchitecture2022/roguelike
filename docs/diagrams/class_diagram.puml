@@ -173,6 +173,6 @@ System o-- EventExchanger
 System o-- EntityStorage
 System o-- EntityFactory
 EntityFactory o-- EntityStorage
-EntityFactory o-- EventExchanger
+EntityStorage o-- EventExchanger
 
 @enduml

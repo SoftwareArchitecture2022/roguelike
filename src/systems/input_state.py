@@ -6,6 +6,7 @@ KEY_X = 4
 KEY_Q = 5
 KEY_E = 6
 
+
 class InputState:
     def __init__(self):
         self.keys = set()

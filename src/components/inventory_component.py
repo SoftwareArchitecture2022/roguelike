@@ -1,5 +1,6 @@
 from component import Component
 
+
 class InventoryComponent(Component):
     def __init__(self, entityId, capacity):
         self.capacity = capacity

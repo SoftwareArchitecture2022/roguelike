@@ -1,5 +1,6 @@
 from component import Component
 
+
 class StatsComponent(Component):
     def __init__(self, entityId):
         self.health = 100

@@ -37,5 +37,8 @@ class IntentionSystem(System):
                 KEY_A: ACTION_LEFT,
                 KEY_S: ACTION_DOWN,
                 KEY_D: ACTION_RIGHT,
+                KEY_X: ACTION_INVENTORY_EQUIP,
+                KEY_Q: ACTION_INVENTORY_LEFT,
+                KEY_E: ACTION_INVENTORY_RIGHT,
                 }
 

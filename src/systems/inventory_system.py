@@ -26,8 +26,17 @@ class InventorySystem(System):
         realComponent = self.entityStorage.getEntityComponent(inventoryComponent.entityId, RealComponent)
         point = (realComponent.x, realComponent.y)
         if point in self.map.keys():
-            if inventoryComponent.insert(self.map[point].first):
+            if self.insertToInventory(inventoryComponent, self.map[point].first):
                 self.entityStorage.deleteEntity(self.map[point].first.entityId)
                 self.map[point].remove(self.map[point].first)
                 if self.map[point].size() == 0:
                     del self.map[point]
+
+
+    def insertToInventory(self, inventoryComponent, item):
+        for i in range(len(inventoryComponent.inventory)):
+            if inventoryComponent.inventory[i] is None:
+                inventoryComponent.inventory[i] = item
+                return True
+        return False
+

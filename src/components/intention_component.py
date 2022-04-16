@@ -11,6 +11,6 @@ ACTION_RIGHT = 3
 
 class IntentionComponent(Component):
     def __init__(self, entityId):
-        super(Component, self).__init__(entityId)
+        super(IntentionComponent, self).__init__(entityId)
         self.actions = set()
 

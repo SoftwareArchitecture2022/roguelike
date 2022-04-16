@@ -1,2 +1,2 @@
 install:
-	pip3 install llist
+	pip3 install llist pynput

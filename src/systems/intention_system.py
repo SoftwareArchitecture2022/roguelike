@@ -1,14 +1,10 @@
 from system import System
 from llist import dllist
+import os
+import sys
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from components.intention_component import *
 
-KEY_W = 0
-KEY_A = 1
-KEY_S = 2
-KEY_D = 3
-ACTION_UP = 0
-ACTION_LEFT = 1
-ACTION_DOWN = 2
-ACTION_RIGHT = 3
 
 class IntentionSystem(System):
     def __init__(self, inputState, entityFactory, entityStorage, eventExchanger):

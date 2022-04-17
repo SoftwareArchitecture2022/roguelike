@@ -1,6 +1,6 @@
-from components.stats_component import StatsComponent
-from components.inventory_component import InventoryComponent
-import components.intention_component as intention
+from src.components.stats_component import StatsComponent
+from src.components.inventory_component import InventoryComponent
+import src.components.intention_component as intention
 from system import System
 from llist import dllist
 import os

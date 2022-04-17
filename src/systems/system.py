@@ -4,3 +4,6 @@ class System:
         self.entity_factory = entity_factory
         self.entity_storage = entity_storage
         self.event_exchanger = event_exchanger
+
+    def update(self):
+        pass

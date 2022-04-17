@@ -1,5 +1,5 @@
-from systems.input_state import KEY_Q, KEY_W, KEY_A, KEY_S, KEY_D, KEY_X, KEY_E
-from components.intention_component import ACTION_UP, ACTION_LEFT, ACTION_DOWN, ACTION_RIGHT, ACTION_INVENTORY_EQUIP, ACTION_INVENTORY_LEFT, ACTION_INVENTORY_RIGHT
+from input_state import KEY_Q, KEY_W, KEY_A, KEY_S, KEY_D, KEY_X, KEY_E
+from src.components.intention_component import ACTION_UP, ACTION_LEFT, ACTION_DOWN, ACTION_RIGHT, ACTION_INVENTORY_EQUIP, ACTION_INVENTORY_LEFT, ACTION_INVENTORY_RIGHT
 from system import System
 from llist import dllist
 import os

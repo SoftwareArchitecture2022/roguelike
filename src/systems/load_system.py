@@ -3,22 +3,22 @@ import random
 
 
 class LoadSystem(System):
-    def __init__(self, entityFactory, entityStorage, eventExchanger,
-                 worldWidth, worldHeight):
-        self.worldWidth = worldWidth
-        self.worldHeight = worldHeight
-        self.needUpdate = True
+    def __init__(self, entity_factory, entity_storage, event_exchanger,
+                 world_width, world_height):
+        self.world_width = world_width
+        self.world_height = world_height
+        self.need_update = True
         super(LoadSystem, self).__init__(
-            entityFactory, entityStorage, eventExchanger)
+            entity_factory, entity_storage, event_exchanger)
 
     def update(self):
-        if self.needUpdate:
-            self.needUpdate = False
+        if self.need_update:
+            self.need_update = False
             self.generate()
 
     # Temporary gen
     def generate(self):
-        self.entityFactory.createPlayer(0, 0)
+        self.entity_factory.create_player(0, 0)
         for _ in range(100):
-            self.entityFactory.createMapItem(random.randint(
-                1, self.worldWidth - 1), random.randint(1, self.worldHeight - 1))
+            self.entity_factory.create_map_item(random.randint(
+                1, self.world_width - 1), random.randint(1, self.world_height - 1))

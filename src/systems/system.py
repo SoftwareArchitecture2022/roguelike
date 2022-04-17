@@ -1,6 +1,6 @@
 
 class System:
-    def __init__(self, entityFactory, entityStorage, eventExchanger):
-        self.entityFactory = entityFactory
-        self.entityStorage = entityStorage
-        self.eventExchanger = eventExchanger
+    def __init__(self, entity_factory, entity_storage, event_exchanger):
+        self.entity_factory = entity_factory
+        self.entity_storage = entity_storage
+        self.event_exchanger = event_exchanger

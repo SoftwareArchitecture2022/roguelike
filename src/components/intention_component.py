@@ -11,6 +11,6 @@ ACTION_INVENTORY_RIGHT = 6
 
 
 class IntentionComponent(Component):
-    def __init__(self, entityId):
-        super(IntentionComponent, self).__init__(entityId)
+    def __init__(self, entity_id):
+        super(IntentionComponent, self).__init__(entity_id)
         self.actions = set()

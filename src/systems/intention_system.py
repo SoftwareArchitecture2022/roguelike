@@ -8,17 +8,17 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 
 
 class IntentionSystem(System):
-    def __init__(self, inputState, entityFactory, entityStorage, eventExchanger):
+    def __init__(self, input_state, entity_factory, entity_storage, event_exchanger):
         super(IntentionSystem, self).__init__(
-            entityFactory, entityStorage, eventExchanger)
-        self.initMapping()
+            entity_factory, entity_storage, event_exchanger)
+        self.init_mapping()
         self.components = dllist()
-        self.inputState = inputState
+        self.inputState = input_state
         # TODO subscribe to events
 
     def update(self):
         self.reset()
-        events = self.eventExchanger.pullEvents()
+        events = self.event_exchanger.pull_events()
         for i in range(len(events)):
             pass
 
@@ -33,7 +33,7 @@ class IntentionSystem(System):
     def reset(self):
         self.actions = set()
 
-    def initMapping(self):
+    def init_mapping(self):
         self.mapping = {
             KEY_W: ACTION_UP,
             KEY_A: ACTION_LEFT,

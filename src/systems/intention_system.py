@@ -11,7 +11,7 @@ class IntentionSystem(System):
             entity_factory, entity_storage, event_exchanger)
         self.init_mapping()
         self.components = dllist()
-        self.inputState = input_state
+        self.input_state = input_state
         self.event_exchanger.subscribe(self, EventType.INTENTION_COMPONENT_CHANGE)
 
     def update(self):
@@ -19,12 +19,12 @@ class IntentionSystem(System):
         events = self.event_exchanger.pull_events(self)
         deleted_components = set()
         for event in events:
-            if event.action == EventAction.ADD_COMPONENT:
+            if event.event_action == EventAction.ADD_COMPONENT:
                 self.components.insert(event.component)
-            elif event.action == EventAction.DELETE_COMPONENT:
+            elif event.event_action == EventAction.DELETE_COMPONENT:
                 deleted_components.add(event.component)
 
-        for key in self.inputState.keys:
+        for key in self.input_state.keys:
             self.actions.add(self.mapping[key])
 
         for node in self.components.iternodes():

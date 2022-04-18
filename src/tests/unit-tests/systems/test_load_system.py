@@ -5,6 +5,7 @@ from src.entity_env.entity_factory import EntityFactory
 from src.events.event_exchanger import EventExchanger
 from src.entity_env.entity_storage import EntityStorage
 
+
 class TestLoadSystem(unittest.TestCase):
     def setUp(self):
         self.event_exchanger = EventExchanger()

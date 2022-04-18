@@ -1,4 +1,4 @@
-from component import Component
+from src.components.component import Component
 
 # TODO: Enum this
 ACTION_UP = 0

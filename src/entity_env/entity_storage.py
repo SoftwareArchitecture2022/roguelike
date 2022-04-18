@@ -1,5 +1,5 @@
-from entity import Entity
-from src.events.event_exchanger import component_type_to_event_type, EventAction
+from src.entity_env.entity import Entity
+from src.events.event_exchanger import get_event_type, EventAction
 
 
 class EntityStorage:
@@ -36,7 +36,7 @@ class EntityStorage:
             self.entity_to_components[entity_id] = type_to_component
 
         self.event_exchanger.emit_event(
-            component_type_to_event_type(component_type),
+            get_event_type(component_type),
             EventAction.ADD_COMPONENT, component)
 
     def delete_entity_component(self, entity_id, component_type):
@@ -53,7 +53,7 @@ class EntityStorage:
             emits delete component event
         """
         self.event_exchanger.emit_event(
-            component_type_to_event_type(type(component)),
+            get_event_type(type(component)),
             EventAction.DELETE_COMPONENT, component)
 
     def delete_entity(self, entity_id):

@@ -33,15 +33,15 @@ class ComponentChangeEvent:
 
 
 component_type_to_event_type = {
-    type(IntentionComponent): EventType.INTENTION_COMPONENT_CHANGE,
-    type(InventoryComponent): EventType.INVENTORY_COMPONENT_CHANGE,
-    type(RealComponent): EventType.REAL_COMPONENT_CHANGE,
-    type(StatsComponent): EventType.STATS_COMPONENT_CHANGE,
+    IntentionComponent: EventType.INTENTION_COMPONENT_CHANGE,
+    InventoryComponent: EventType.INVENTORY_COMPONENT_CHANGE,
+    RealComponent: EventType.REAL_COMPONENT_CHANGE,
+    StatsComponent: EventType.STATS_COMPONENT_CHANGE,
     # TODO: add components
 }
 
 
-def get_event_type(self, component_type):
+def get_event_type(component_type):
     return component_type_to_event_type[component_type]
 
 

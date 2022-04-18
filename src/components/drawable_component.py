@@ -1,4 +1,4 @@
-from component import Component
+from src.components.component import Component
 
 
 class DrawableComponent(Component):

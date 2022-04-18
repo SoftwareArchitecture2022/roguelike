@@ -12,9 +12,9 @@ class TestEntityFactory(unittest.TestCase):
         self.entity_factory = EntityFactory(entity_storage)
 
     def test_create_player(self):
-        id = self.entity_factory.create_player(4, 4, 5)
-        self.assertEqual(id, 0)
+        player_id = self.entity_factory.create_player(4, 4, 5)
+        self.assertEqual(player_id, 0)
 
 
 if __name__ == "__main__":
-  unittest.main()
+    unittest.main()

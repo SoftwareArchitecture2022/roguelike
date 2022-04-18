@@ -1,11 +1,9 @@
 from src.components.stats_component import StatsComponent
 from src.components.inventory_component import InventoryComponent
 import src.components.intention_component as intention
-from system import System
+from src.systems.system import System
 from llist import dllist
-import os
-import sys
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from src.events.event_exchanger import EventType, EventAction
 
 
 class WearSystem(System):
@@ -13,15 +11,20 @@ class WearSystem(System):
         super(WearSystem, self).__init__(
             entity_factory, entity_storage, event_exchanger)
         self.intention_components = dllist()
+        self.event_exchanger.subscribe(self, EventType.INTENTION_COMPONENT_CHANGE)
 
     def update(self):
         events = self.event_exchanger.pullEvents()
-        for i in range(len(events)):
-            pass
-
+        deleted_components = set()
+        for event in events:
+            if event.action == EventAction.ADD_COMPONENT:
+                self.intention_components.insert(event.component)
+            elif event.action == EventAction.DELETE_COMPONENT:
+                deleted_components.add(event.component)
         for node in self.intention_components.iternodes():
-            if False:  # TODO delete deleted component
-                self.components.remove(node)
+            if node.value in deleted_components:
+                self.intention_components.remove(node)
+                continue
             self.do_wear(node.value)
 
     def do_wear(self, intention_component):

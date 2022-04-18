@@ -1,6 +1,6 @@
-from system import System
+from src.systems.system import System
 from pynput import keyboard
-from input_state import KEY_Q, KEY_E, KEY_X, KEY_W, KEY_A, KEY_S, KEY_D
+from src.systems.input_state import KEY_Q, KEY_E, KEY_X, KEY_W, KEY_A, KEY_S, KEY_D
 
 
 class InputSystem(System):

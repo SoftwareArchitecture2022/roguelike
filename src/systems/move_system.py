@@ -1,10 +1,8 @@
-from components.real_component import RealComponent
-import components.intention_component as intention
-from system import System
+from src.components.real_component import RealComponent
+import src.components.intention_component as intention
+from src.systems.system import System
 from llist import dllist
-import os
-import sys
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from src.events.event_exchanger import EventType, EventAction
 
 
 class MoveSystem(System):
@@ -15,15 +13,21 @@ class MoveSystem(System):
         super(MoveSystem, self).__init__(
             entity_factory, entity_storage, event_exchanger)
         self.components = dllist()
+        self.event_exchanger.subscribe(self, EventType.INTENTION_COMPONENT_CHANGE)
 
     def update(self):
         events = self.event_exchanger.pullEvents()
-        for i in range(len(events)):
-            pass
+        deleted_components = set()
+        for event in events:
+            if event.action == EventAction.ADD_COMPONENT:
+                self.components.insert(event.component)
+            elif event.action == EventAction.DELETE_COMPONENT:
+                deleted_components.add(event.component)
 
         for node in self.components.iternodes():
-            if False:  # TODO delete deleted component
+            if node.value in deleted_components:
                 self.components.remove(node)
+                continue
             self.do_move(node.value)
 
     def do_move(self, intention_component):

@@ -1,4 +1,4 @@
-from system import System
+from src.systems.system import System
 import random
 
 
@@ -18,7 +18,7 @@ class LoadSystem(System):
 
     # Temporary gen
     def generate(self):
-        self.entity_factory.create_player(0, 0)
+        self.entity_factory.create_player(0, 0, 10)
         for _ in range(100):
             self.entity_factory.create_map_item(random.randint(
                 1, self.world_width - 1), random.randint(1, self.world_height - 1))

@@ -1,10 +1,8 @@
-from input_state import KEY_Q, KEY_W, KEY_A, KEY_S, KEY_D, KEY_X, KEY_E
+from src.systems.input_state import KEY_Q, KEY_W, KEY_A, KEY_S, KEY_D, KEY_X, KEY_E
 from src.components.intention_component import ACTION_UP, ACTION_LEFT, ACTION_DOWN, ACTION_RIGHT, ACTION_INVENTORY_EQUIP, ACTION_INVENTORY_LEFT, ACTION_INVENTORY_RIGHT
-from system import System
+from src.systems.system import System
 from llist import dllist
-import os
-import sys
-sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from src.events.event_exchanger import EventType, EventAction
 
 
 class IntentionSystem(System):
@@ -14,20 +12,25 @@ class IntentionSystem(System):
         self.init_mapping()
         self.components = dllist()
         self.inputState = input_state
-        # TODO subscribe to events
+        self.event_exchanger.subscribe(self, EventType.INTENTION_COMPONENT_CHANGE)
 
     def update(self):
         self.reset()
-        events = self.event_exchanger.pull_events()
-        for i in range(len(events)):
-            pass
+        events = self.event_exchanger.pull_events(self)
+        deleted_components = set()
+        for event in events:
+            if event.action == EventAction.ADD_COMPONENT:
+                self.components.insert(event.component)
+            elif event.action == EventAction.DELETE_COMPONENT:
+                deleted_components.add(event.component)
 
         for key in self.inputState.keys:
             self.actions.add(self.mapping[key])
 
         for node in self.components.iternodes():
-            if False:  # TODO delete deleted component
+            if node.value in deleted_components:
                 self.components.remove(node)
+                continue
             node.value.actions = self.actions
 
     def reset(self):

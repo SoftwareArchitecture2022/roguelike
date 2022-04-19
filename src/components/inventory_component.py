@@ -6,4 +6,5 @@ class InventoryComponent(Component):
         self.capacity = capacity
         self.inventory = [None for _ in range(capacity)]
         self.pointer = 0
+        self.load = 0
         super(InventoryComponent, self).__init__(entity_id)

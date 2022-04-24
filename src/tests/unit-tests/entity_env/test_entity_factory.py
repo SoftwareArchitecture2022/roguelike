@@ -13,8 +13,16 @@ class TestEntityFactory(unittest.TestCase):
 
     def test_create_player(self):
         player_id = self.entity_factory.create_player(4, 4, 5)
-        self.assertEqual(player_id, 0)
+        self.assertNotEqual(player_id, None)
 
+        components = self.entity_factory.entity_storage.entity_to_components[
+            player_id]
+        self.assertEqual(len(components), 4)
 
-if __name__ == "__main__":
-    unittest.main()
+    def test_create_map_item(self):
+        item_id = self.entity_factory.create_map_item(1, 1)
+        self.assertNotEqual(item_id, None)
+
+        components = self.entity_factory.entity_storage.entity_to_components[
+            item_id]
+        self.assertEqual(len(components), 2)

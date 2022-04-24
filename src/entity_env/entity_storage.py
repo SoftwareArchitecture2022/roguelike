@@ -22,7 +22,9 @@ class EntityStorage:
         """
             gets component by its type and entity id
         """
-        return self.entity_to_components[entity_id][component_type]
+        if entity_map := self.entity_to_components.get(entity_id):
+            return entity_map.get(component_type)
+        return None
 
     def add_entity_component(self, entity_id, component_type, *args, **kwargs):
         """
@@ -46,7 +48,7 @@ class EntityStorage:
         if entity_components := self.entity_to_components.get(entity_id):
             if component := entity_components.get(component_type):
                 self.emit_delete_component_event(component)
-            entity_components.pop(component_type)
+            entity_components.pop(component_type, None)
 
     def emit_delete_component_event(self, component):
         """
@@ -64,4 +66,4 @@ class EntityStorage:
         if entity_components := self.entity_to_components.get(entity_id):
             for component_type, component in entity_components.items():
                 self.emit_delete_component_event(component)
-        self.entity_to_components.pop(entity_id)
+        self.entity_to_components.pop(entity_id, None)

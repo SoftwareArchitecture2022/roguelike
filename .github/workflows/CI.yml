@@ -16,3 +16,8 @@ jobs:
           checkName: 'lint-tests'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  test_unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Unit tests
+        run: make test_unit

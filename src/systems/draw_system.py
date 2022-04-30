@@ -1,4 +1,7 @@
-from system import System
+from src.systems.system import System
+from src.events.event_exchanger import EventType, EventAction
+from src.components.real_component import RealComponent
+from src.components.drawable_component import DrawableComponent
 
 
 class ImageBuffer:
@@ -74,21 +77,36 @@ class DrawSystem(System):
         self.drawables = []
         self.ch_inventory_component = None
         self.ch_stats_component = None
-        # TODO подписаться на события создания компонент drawable, а также inventory и stats персонажа в event_exchanger
         self.image_buffer = ImageBuffer()
+        # подписываемся на события создания компонент drawable, а также inventory и stats персонажа
+        self.event_exchanger.subscribe(self, EventType.DRAWABLE_COMPONENT_CHANGE)
+        self.event_exchanger.subscribe(self, EventType.INVENTORY_COMPONENT_CHANGE)
+        self.event_exchanger.subscribe(self, EventType.STATS_COMPONENT_CHANGE)
 
     def update(self):
         self.image_buffer.clear()
-        # TODO обработать новые события из event_exchanger
+        # обработка новых событий из event_exchanger
+        for event in self.event_exchanger.pull_events(self):
+            if event.event_type == EventType.DRAWABLE_COMPONENT_CHANGE:
+                if event.event_action == EventAction.ADD_COMPONENT:
+                    self.drawables.append(event.component)
+                if event.event_action == EventAction.DELETE_COMPONENT:
+                    self.drawables.remove(event.component)
+            elif event.event_type == EventType.INVENTORY_COMPONENT_CHANGE:
+                self.ch_inventory_component = event.component
+            elif event.event_type == EventType.STATS_COMPONENT_CHANGE:
+                self.ch_stats_component = event.component
         map_view = MapView()
         for d in self.drawables:
-            i, j = -1, -1  # TODO получить координаты i, j из компоненты real соответствующей данной drawable
+            # получение координат i, j из компоненты real соответствующей данной drawable
+            real_component = self.entity_storage.get_entity_component(d.entity_id, RealComponent)
+            i, j = real_component.x, real_component.y
             map_view.add_drawable(d, i, j)
         self.image_buffer.add_view(map_view, 'MapView')
         inventory_view = InventoryView(self.ch_inventory_component.capacity)
         for p, i in enumerate(self.ch_inventory_component.inventory):
-            d = None
-            # TODO получить drawable для компонента inventory_item
+            # получение drawable для компонента inventory_item
+            d = self.entity_storage.get_entity_component(i.entity_id, DrawableComponent)
             inventory_view.add_inventory_drawable(d, p)
         inventory_view.set_pointer(self.ch_inventory_component.pointer)
         self.image_buffer.add_view(inventory_view, 'InventoryView')

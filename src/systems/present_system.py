@@ -1,4 +1,4 @@
-from system import System
+from src.systems.system import System
 
 
 class ConsoleWindow:
@@ -28,11 +28,12 @@ class PresentSystem(System):
     Определяет размеры вьюшек и их расположение на экране, рисует их
     """
 
+    def __init__(self, entity_factory, entity_storage, event_exchanger, image_buffer):
+        super().__init__(entity_factory, entity_storage, event_exchanger)
+        self.image_buffer = image_buffer
+
     def set_window(self, window):
         self.window = window
-
-    def set_image_buffer(self, image_buffer):
-        self.image_buffer = image_buffer
 
     def _draw_image(self, y, x, image):
         self.window.addstr(y, x, image)

@@ -103,18 +103,20 @@ class DrawSystem(System):
             i, j = real_component.x, real_component.y
             map_view.add_drawable(d, i, j)
         self.image_buffer.add_view(map_view, 'MapView')
-        inventory_view = InventoryView(self.ch_inventory_component.capacity)
-        for p, i in enumerate(self.ch_inventory_component.inventory):
-            # получение drawable для компонента inventory_item
-            d = self.entity_storage.get_entity_component(i.entity_id, DrawableComponent)
-            inventory_view.add_inventory_drawable(d, p)
-        inventory_view.set_pointer(self.ch_inventory_component.pointer)
-        self.image_buffer.add_view(inventory_view, 'InventoryView')
-        stats_view = StatsView()
-        stats_view.add_stat('health', self.ch_stats_component.health)
-        stats_view.add_stat('attack', self.ch_stats_component.attack)
-        stats_view.add_stat('armor', self.ch_stats_component.armor)
-        self.image_buffer.add_view(stats_view, 'StatsView')
+        if self.ch_inventory_component is not None:
+            inventory_view = InventoryView(self.ch_inventory_component.capacity)
+            for p, i in enumerate(self.ch_inventory_component.inventory):
+                # получение drawable для компонента inventory_item
+                d = self.entity_storage.get_entity_component(i.entity_id, DrawableComponent)
+                inventory_view.add_inventory_drawable(d, p)
+            inventory_view.set_pointer(self.ch_inventory_component.pointer)
+            self.image_buffer.add_view(inventory_view, 'InventoryView')
+        if self.ch_stats_component is not None:
+            stats_view = StatsView()
+            stats_view.add_stat('health', self.ch_stats_component.health)
+            stats_view.add_stat('attack', self.ch_stats_component.attack)
+            stats_view.add_stat('armor', self.ch_stats_component.armor)
+            self.image_buffer.add_view(stats_view, 'StatsView')
 
     def get_image_buffer(self):
         return self.image_buffer

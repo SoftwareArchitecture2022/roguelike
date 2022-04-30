@@ -42,23 +42,26 @@ class PresentSystem(System):
         self.window.clear()
         vertical_shift = 0
         map_view = self.image_buffer.get_view('MapView')
-        tile_size = 1
-        # TODO возможно, расчет размера тайла исходя из размера окна, на котором рисуем
-        for i, col in enumerate(map_view.data):
-            for j, d in enumerate(col):
+        if map_view is not None:
+            tile_size = 1
+            # TODO возможно, расчет размера тайла исходя из размера окна, на котором рисуем
+            for i, col in enumerate(map_view.data):
+                for j, d in enumerate(col):
+                    if d is None:
+                        continue
+                    self._draw_image(i * tile_size + vertical_shift, j * tile_size, d.get_image(tile_size))
+            vertical_shift += tile_size * len(map_view.data)
+        inventory_view = self.image_buffer.get_view('InventoryView')
+        if inventory_view is not None:
+            inventory_item_size = 1
+            for i, d in enumerate(inventory_view.inventory_drawables):
                 if d is None:
                     continue
-                self._draw_image(i * tile_size + vertical_shift, j * tile_size, d.get_image(tile_size))
-        vertical_shift += tile_size * len(map_view.data)
-        inventory_view = self.image_buffer.get_view('InventoryView')
-        inventory_item_size = 1
-        for i, d in enumerate(inventory_view.inventory_drawables):
-            if d is None:
-                continue
-            self._draw_image(vertical_shift, inventory_item_size * i, d.get_image(inventory_item_size))
-        self._draw_image(1 + vertical_shift, inventory_item_size * inventory_view.pointer_pos, '^')
-        vertical_shift += 2
+                self._draw_image(vertical_shift, inventory_item_size * i, d.get_image(inventory_item_size))
+            self._draw_image(1 + vertical_shift, inventory_item_size * inventory_view.pointer_pos, '^')
+            vertical_shift += 2
         stats_view = self.image_buffer.get_view('StatsView')
-        for i, k in enumerate(stats_view.ch_stats):
-            self._draw_image(i + vertical_shift, 0, k + ": " + str(stats_view.ch_stats[k]))
+        if stats_view is not None:
+            for i, k in enumerate(stats_view.ch_stats):
+                self._draw_image(i + vertical_shift, 0, k + ": " + str(stats_view.ch_stats[k]))
         self.window.refresh()

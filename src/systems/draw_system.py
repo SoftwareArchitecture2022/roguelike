@@ -15,7 +15,7 @@ class ImageBuffer:
         self.views[view_type] = view
 
     def get_view(self, view_type):
-        return self.views[view_type]
+        return self.views.get(view_type)
 
     def clear(self):
         self.views.clear()
@@ -96,7 +96,7 @@ class DrawSystem(System):
                 self.ch_inventory_component = event.component
             elif event.event_type == EventType.STATS_COMPONENT_CHANGE:
                 self.ch_stats_component = event.component
-        map_view = MapView()
+        map_view = MapView(self.world_width, self.world_height)
         for d in self.drawables:
             # получение координат i, j из компоненты real соответствующей данной drawable
             real_component = self.entity_storage.get_entity_component(d.entity_id, RealComponent)

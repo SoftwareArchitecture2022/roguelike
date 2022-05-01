@@ -11,8 +11,10 @@ class InventorySystem(System):
             entity_factory, entity_storage, event_exchanger)
         self.inventory_components = dllist()
         self.map = {}
-        self.event_exchanger.subscribe(self, EventType.MAP_ITEM_COMPONENT)
-        self.event_exchanger.subscribe(self, EventType.INVENTORY_COMPONENT_CHANGE)
+        self.event_exchanger.subscribe(self,
+                                       EventType.MAP_ITEM_COMPONENT_CHANGE)
+        self.event_exchanger.subscribe(self,
+                                       EventType.INVENTORY_COMPONENT_CHANGE)
 
     def update(self):
         events = self.event_exchanger.pull_events()
@@ -23,7 +25,7 @@ class InventorySystem(System):
                     self.inventory_components.insert(event.component)
                 elif event.event_action == EventAction.DELETE_COMPONENT:
                     deleted_components.add(event.component)
-            elif event.event_type == EventType.MAP_ITEM_COMPONENT:
+            elif event.event_type == EventType.MAP_ITEM_COMPONENT_CHANGE:
                 real_component = self.entity_storage.get_entity_component(
                     event.component.entity_id, RealComponent)
                 point = (real_component.x, real_component.y)
@@ -56,8 +58,10 @@ class InventorySystem(System):
                 entity_id = self.entity_factory.create_inventory_item()
                 inventory_item_component = self.entity_storage.get_entity_component(
                     entity_id, InventoryItemComponent)
-                self.insert_to_inventory(inventory_component, inventory_item_component)
-                self.entity_storage.delete_entity(self.map[point].first.value.entity_id)
+                self.insert_to_inventory(inventory_component,
+                                         inventory_item_component)
+                self.entity_storage.delete_entity(
+                    self.map[point].first.value.entity_id)
                 self.remove_map_item(point, self.map[point].first)
 
     def insert_to_inventory(self, inventory_component, item):

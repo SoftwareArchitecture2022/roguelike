@@ -12,17 +12,17 @@ class InputSystem(System):
     def update(self):
         with keyboard.Events() as events:
             for event in events:
-                if event.key == keyboard.Key.q:
+                if event.key == 'q':
                     self.input_state.keys.insert(KEY_Q)
-                elif event.key == keyboard.Key.e:
+                elif event.key == 'e':
                     self.input_state.keys.insert(KEY_E)
-                elif event.key == keyboard.Key.x:
+                elif event.key == 'x':
                     self.input_state.keys.insert(KEY_X)
-                elif event.key == keyboard.Key.w:
+                elif event.key == 'w':
                     self.input_state.keys.insert(KEY_W)
-                elif event.key == keyboard.Key.a:
+                elif event.key == 'a':
                     self.input_state.keys.insert(KEY_A)
-                elif event.key == keyboard.Key.s:
+                elif event.key == 's':
                     self.input_state.keys.insert(KEY_S)
-                elif event.key == keyboard.Key.d:
+                elif event.key == 'd':
                     self.input_state.keys.insert(KEY_D)

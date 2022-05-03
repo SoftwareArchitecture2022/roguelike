@@ -106,7 +106,7 @@ class DrawSystem(System):
         if self.ch_inventory_component is not None:
             inventory_view = InventoryView(self.ch_inventory_component.capacity)
             for p, i in enumerate(self.ch_inventory_component.inventory):
-                if i == None:
+                if i is None:
                     continue
                 # получение drawable для компонента inventory_item
                 d = self.entity_storage.get_entity_component(i.entity_id, DrawableComponent)

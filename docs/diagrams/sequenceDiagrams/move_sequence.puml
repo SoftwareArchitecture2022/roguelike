@@ -1,0 +1,85 @@
+@startuml
+actor Player
+participant InputSystem
+participant IntentionSystem
+participant Input
+participant IntentionComponent
+participant MoveSystem
+participant RealComponent
+participant InventorySystem
+participant InventoryComponent
+participant MapItemComponent
+participant InventoryItemComponent
+participant DrawSystem
+participant DrawableComponent
+participant ImageBuffer
+participant PresentSystem
+
+title **Move sequence diagram**
+
+activate Player
+
+InputSystem -> Input : reset pressed buttons
+
+activate InputSystem
+activate Input
+
+Player -> InputSystem : press W
+InputSystem -> Input : set buttons pressed
+
+deactivate InputSystem
+
+
+
+IntentionSystem -> Input : get buttons pressed
+deactivate Input
+activate IntentionSystem
+
+loop over IntentionComponents
+  IntentionSystem -> IntentionComponent : set intention
+  deactivate IntentionSystem
+end
+
+
+
+loop over RealComponents
+  MoveSystem -> RealComponent : get IntentionComponent by entity id
+  activate MoveSystem
+  MoveSystem -> MoveSystem  : try to move(RealComponent, IntentionComponent)
+end
+deactivate MoveSystem
+
+
+loop over InventoryComponents
+  InventorySystem -> InventoryComponent : get RealComponent by entity id
+  activate InventorySystem
+  InventorySystem -> InventorySystem : lookup intersections\nwith MapItemComponents
+
+  alt Intersection found
+    InventorySystem -> MapItemComponent : delete entity component
+    InventorySystem -> InventoryItemComponent : add entity component
+  end
+  deactivate InventorySystem
+end
+
+
+DrawSystem -> ImageBuffer  : reset buffer
+activate DrawSystem
+activate ImageBuffer
+
+loop over DrawableComponents
+  DrawSystem -> DrawableComponent : get RealComponent by entity id
+  DrawSystem -> ImageBuffer  : draw to buffer(RealComponent, DrawableComponent)
+  deactivate DrawSystem
+end
+
+loop
+  PresentSystem -> ImageBuffer : get image  
+  activate PresentSystem
+  PresentSystem -> PresentSystem  : draw image
+end
+deactivate PresentSystem
+
+deactivate ImageBuffer
+
+@enduml

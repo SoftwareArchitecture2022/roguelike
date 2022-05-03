@@ -17,7 +17,7 @@ class InventorySystem(System):
                                        EventType.INVENTORY_COMPONENT_CHANGE)
 
     def update(self):
-        events = self.event_exchanger.pull_events()
+        events = self.event_exchanger.pull_events(self)
         deleted_components = set()
         for event in events:
             if event.event_type == EventType.INVENTORY_COMPONENT_CHANGE:

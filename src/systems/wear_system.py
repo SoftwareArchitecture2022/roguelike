@@ -14,12 +14,12 @@ class WearSystem(System):
         self.event_exchanger.subscribe(self, EventType.INTENTION_COMPONENT_CHANGE)
 
     def update(self):
-        events = self.event_exchanger.pullEvents()
+        events = self.event_exchanger.pull_events(self)
         deleted_components = set()
         for event in events:
-            if event.action == EventAction.ADD_COMPONENT:
+            if event.event_action == EventAction.ADD_COMPONENT:
                 self.intention_components.insert(event.component)
-            elif event.action == EventAction.DELETE_COMPONENT:
+            elif event.event_action == EventAction.DELETE_COMPONENT:
                 deleted_components.add(event.component)
         for node in self.intention_components.iternodes():
             if node.value in deleted_components:

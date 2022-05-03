@@ -1,6 +1,7 @@
 from src.systems.system import System
 from pynput import keyboard
 from src.systems.input_state import KEY_Q, KEY_E, KEY_X, KEY_W, KEY_A, KEY_S, KEY_D
+import queue
 
 
 class InputSystem(System):
@@ -8,21 +9,31 @@ class InputSystem(System):
         super(InputSystem, self).__init__(
             entity_factory, entity_storage, event_exchanger)
         self.input_state = input_state
+        self.events = queue.Queue()
+        listener = keyboard.Listener(
+            on_press=self.on_press)
+        listener.start()
+
+    def on_press(self, key):
+        try:
+            self.events.put(key.char)
+        except AttributeError:
+            pass
 
     def update(self):
-        with keyboard.Events() as events:
-            for event in events:
-                if event.key == 'q':
-                    self.input_state.keys.insert(KEY_Q)
-                elif event.key == 'e':
-                    self.input_state.keys.insert(KEY_E)
-                elif event.key == 'x':
-                    self.input_state.keys.insert(KEY_X)
-                elif event.key == 'w':
-                    self.input_state.keys.insert(KEY_W)
-                elif event.key == 'a':
-                    self.input_state.keys.insert(KEY_A)
-                elif event.key == 's':
-                    self.input_state.keys.insert(KEY_S)
-                elif event.key == 'd':
-                    self.input_state.keys.insert(KEY_D)
+        while not self.events.empty():
+            key = str(self.events.get())
+            if key == "q":
+                self.input_state.keys.add(KEY_Q)
+            elif key == 'e':
+                self.input_state.keys.add(KEY_E)
+            elif key == 'x':
+                self.input_state.keys.add(KEY_X)
+            elif key == 'w':
+                self.input_state.keys.add(KEY_W)
+            elif key == 'a':
+                self.input_state.keys.add(KEY_A)
+            elif key == 's':
+                self.input_state.keys.add(KEY_S)
+            elif key == 'd':
+                self.input_state.keys.add(KEY_D)
